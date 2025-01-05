@@ -10,11 +10,11 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Definir la ruta del archivo Excel
 const filePath = path.join('C:', 'Users', 'Mamut', 'Desktop', 'PWebDent', 'ServidorDentista.xlsx');
 
+// Cargar citas existentes del archivo Excel si existe
 let appointments = [];
-
-// Cargar o crear el archivo Excel
 if (fs.existsSync(filePath)) {
     console.log('Loading existing appointments from Excel file.');
     const workbook = XLSX.readFile(filePath);
@@ -30,12 +30,6 @@ if (fs.existsSync(filePath)) {
 
 app.post('/api/book-appointment', (req, res) => {
     const { name, email, dni, phone, date, time } = req.body;
-
-    // Eliminar la verificación de citas existentes
-    // const overlapping = appointments.find(appointment => appointment.Date === date && appointment.Time === time);
-    // if (overlapping) {
-    //     return res.status(400).send({ message: `Fecha y hora ya reservadas: ${date} a las ${time}. Intente de nuevo.` });
-    // }
 
     // Agregar la nueva cita
     const newAppointment = { Name: name, Email: email, DNI: dni, Phone: phone, Date: date, Time: time };

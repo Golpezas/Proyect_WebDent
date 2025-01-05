@@ -30,7 +30,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
     .catch(error => {
         Swal.fire({
             title: 'Advertencia',
-            text: 'Fecha y hora no disponible, seleccione fecha u hora diferente. Gracias',
+            text: error.message,  // Mostrar el mensaje de error devuelto por el servidor
             icon: 'warning',
             confirmButtonText: 'Aceptar'
         });
