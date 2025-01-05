@@ -8,7 +8,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
 
-    fetch('/api/book-appointment', {
+    fetch('http://localhost:3000/api/book-appointment', {  // Asegúrate de que la URL sea correcta
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, dni, phone, date, time })
@@ -29,10 +29,10 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
     })
     .catch(error => {
         Swal.fire({
-            title: 'Advertencia',
-            text: error.message,  // Mostrar el mensaje de error devuelto por el servidor
-            icon: 'warning',
-            confirmButtonText: 'Aceptar'
+            title: 'Error',
+            text: 'Failed to fetch: ' + error.message,
+            icon: 'error',
+            confirmButtonText: 'OK'
         });
         console.error('Error:', error);
     });
