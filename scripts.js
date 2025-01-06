@@ -13,12 +13,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, dni, phone, date, time })
     })
-    .then(response => {
-        if (!response.ok) {
-            return response.json().then(error => { throw new Error(error.message); });
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         Swal.fire({
             title: 'Success',
