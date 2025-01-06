@@ -3,10 +3,12 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const XLSX = require('xlsx');
 const path = require('path');
+const cors = require('cors');  // Importar cors
 
 const app = express();
 const PORT = 3000;
 
+app.use(cors());  // Usar cors
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
