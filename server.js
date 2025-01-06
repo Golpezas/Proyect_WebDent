@@ -10,10 +10,8 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Definir la ruta del archivo Excel
 const filePath = path.join('C:', 'Users', 'Mamut', 'Desktop', 'PWebDent', 'ServidorDentista.xlsx');
 
-// Cargar citas existentes del archivo Excel si existe
 let appointments = [];
 if (fs.existsSync(filePath)) {
     console.log('Loading existing appointments from Excel file.');
@@ -31,11 +29,9 @@ if (fs.existsSync(filePath)) {
 app.post('/api/book-appointment', (req, res) => {
     const { name, email, dni, phone, date, time } = req.body;
 
-    // Agregar la nueva cita
     const newAppointment = { Name: name, Email: email, DNI: dni, Phone: phone, Date: date, Time: time };
     appointments.push(newAppointment);
 
-    // Preparar datos para escribir en el archivo Excel
     const data = [
         ['Name', 'Email', 'DNI', 'Phone', 'Date', 'Time'],
         ...appointments.map(appointment => [appointment.Name, appointment.Email, appointment.DNI, appointment.Phone, appointment.Date, appointment.Time])
