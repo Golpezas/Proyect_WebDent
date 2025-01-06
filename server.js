@@ -3,12 +3,10 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const XLSX = require('xlsx');
 const path = require('path');
-const cors = require('cors');  // Importar cors
 
 const app = express();
 const PORT = 3000;
 
-app.use(cors());  // Usar cors
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,11 +44,15 @@ app.post('/api/book-appointment', (req, res) => {
     try {
         XLSX.writeFile(wb, filePath);
         console.log(`File saved to ${filePath}`);
-        res.send({ message: 'Appointment booked and saved to Excel file.' });
+        res.json({ message: 'Appointment booked and saved to Excel file.' });
     } catch (error) {
         console.error(`Error saving file: ${error}`);
-        res.status(500).send({ message: 'Error saving appointment to Excel file.' });
+        res.status(500).json({ message: 'Error saving appointment to Excel file.' });
     }
+});
+
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Endpoint not found' });
 });
 
 app.listen(PORT, () => {
