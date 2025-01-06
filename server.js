@@ -14,6 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const filePath = path.join('C:', 'Users', 'Mamut', 'Desktop', 'PWebDent', 'ServidorDentista.xlsx');
 
+// Cargar citas existentes desde el archivo Excel si existe
 let appointments = [];
 if (fs.existsSync(filePath)) {
     console.log('Loading existing appointments from Excel file.');
@@ -28,6 +29,7 @@ if (fs.existsSync(filePath)) {
     console.log('No existing Excel file found. Starting with an empty list of appointments.');
 }
 
+// Ruta para reservar una cita
 app.post('/api/book-appointment', (req, res) => {
     const { name, email, dni, phone, date, time } = req.body;
 
@@ -48,11 +50,12 @@ app.post('/api/book-appointment', (req, res) => {
         console.log(`File saved to ${filePath}`);
         res.json({ message: 'Appointment booked and saved to Excel file.' });
     } catch (error) {
-        console.error(`Error saving file: ${error}`);
-        res.status(500).json({ message: 'Error saving appointment to Excel file.' });
+        console.error(`Error saving file: ${error.message}`);
+        res.status(500).json({ message: 'Error saving appointment to Excel file.', error: error.message });
     }
 });
 
+// Manejo de rutas no encontradas
 app.use((req, res, next) => {
     res.status(404).json({ message: 'Endpoint not found' });
 });
