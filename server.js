@@ -43,8 +43,20 @@ app.post('/api/book-appointment', (req, res) => {
         ];
 
         const ws = XLSX.utils.aoa_to_sheet(data);
-        const wb = fs.existsSync(filePath) ? XLSX.readFile(filePath) : XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Appointments');
+        let wb;
+        if (fs.existsSync(filePath)) {
+            wb = XLSX.readFile(filePath);
+            // Si la hoja ya existe, elimínala antes de agregar la nueva
+            if (wb.Sheets['Appointments']) {
+                console.log('Worksheet "Appointments" already exists. It will be replaced.');
+                wb.Sheets['Appointments'] = ws;
+            } else {
+                XLSX.utils.book_append_sheet(wb, ws, 'Appointments');
+            }
+        } else {
+            wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Appointments');
+        }
 
         XLSX.writeFile(wb, filePath);
         console.log(`File saved to ${filePath}`);
