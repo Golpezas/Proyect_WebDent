@@ -8,7 +8,7 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
 
-    fetch('http://localhost:3000/api/book-appointment', {  // Asegúrate de que la URL sea correcta
+    fetch('http://localhost:3000/api/book-appointment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, dni, phone, date, time })

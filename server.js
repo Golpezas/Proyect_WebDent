@@ -8,7 +8,7 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
-app.use(cors());  // Usar cors
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -31,19 +31,19 @@ if (fs.existsSync(filePath)) {
 app.post('/api/book-appointment', (req, res) => {
     const { name, email, dni, phone, date, time } = req.body;
 
-    const newAppointment = { Name: name, Email: email, DNI: dni, Phone: phone, Date: date, Time: time };
-    appointments.push(newAppointment);
-
-    const data = [
-        ['Name', 'Email', 'DNI', 'Phone', 'Date', 'Time'],
-        ...appointments.map(appointment => [appointment.Name, appointment.Email, appointment.DNI, appointment.Phone, appointment.Date, appointment.Time])
-    ];
-
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = fs.existsSync(filePath) ? XLSX.readFile(filePath) : XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Appointments');
-
     try {
+        const newAppointment = { Name: name, Email: email, DNI: dni, Phone: phone, Date: date, Time: time };
+        appointments.push(newAppointment);
+
+        const data = [
+            ['Name', 'Email', 'DNI', 'Phone', 'Date', 'Time'],
+            ...appointments.map(appointment => [appointment.Name, appointment.Email, appointment.DNI, appointment.Phone, appointment.Date, appointment.Time])
+        ];
+
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = fs.existsSync(filePath) ? XLSX.readFile(filePath) : XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Appointments');
+
         XLSX.writeFile(wb, filePath);
         console.log(`File saved to ${filePath}`);
         res.json({ message: 'Appointment booked and saved to Excel file.' });
